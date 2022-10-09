@@ -22,25 +22,6 @@ $(function() {
       }
     }
   })
-  // 监听注册表单的提交事件
-  $('#form_reg').on('submit',function(e) {
-    e.preventDefault()
-    $.ajax({
-      url:'/api/reg',
-      type:'POST',
-      contentType:'application/json',
-      data:JSON.stringify({username: $('#form_reg [name=username]').val(),
-                           password: $('#form_reg [name=password]').val(),
-                           repassword: $('#form_reg [name=repassword]').val()}),
-      success: function(res) {
-        if(res.code !== 0) { 
-          return layer.msg(res.message)
-        }
-        layer.msg('注册成功,请登录!')
-        $('#gotoLogin').click()
-      }
-    })
-  })
 
   // 将kwy-value格式的数据转变成json格式的字符串
   const formatToJson = (source) => {
@@ -52,15 +33,31 @@ $(function() {
     return JSON.stringify(target)
   }
 
+  // 监听注册表单的提交事件
+  $('#form_reg').on('submit',function(e) {
+    e.preventDefault()
+    $.ajax({
+      url:'/api/reg',
+      type:'POST',
+      data:$(this).serialize(),
+      success: function(res) {
+        if(res.code !== 0) { 
+          return layer.msg(res.message)
+        }
+        layer.msg('注册成功,请登录!')
+        $('#gotoLogin').click()
+      }
+    })
+  })
+
   // 监听登录表单的提交事件
   $('#form_login').submit(function(e) {
     e.preventDefault()
     $.ajax({
       url:'/api/login',
       type:'POST',
-      contentType:'application/json',
       // 快速获取表单中数据
-      data: formatToJson($(this).serialize()),
+      data: $(this).serialize(),
       success: function(res) {
         if (res.code !== 0) {
           return layer.msg('登录失败！')
@@ -72,12 +69,4 @@ $(function() {
       }
     })
   })
-
-
-
-
-
-
-
-
 })
