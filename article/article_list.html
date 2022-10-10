@@ -64,7 +64,7 @@
     <td>{{$value.state}}</td>
     <td>
       <button type="button" class="layui-btn layui-btn-xs">编辑</button>
-      <button type="button" class="layui-btn layui-btn-danger layui-btn-xs btn-delete" data-id="{{$value.Id}}">删除</button>
+      <button type="button" class="layui-btn layui-btn-danger layui-btn-xs btn-delete" data-id="{{$value.id}}">删除</button>
     </td>
   </tr>
   {{/each}}
@@ -74,7 +74,7 @@
 <script type="text/html" id="tpl-cate">
   <option value="">所有分类</option>
   {{each data}}
-  <option value="{{$value.id}}">{{ $value.cate_name}}</option>
+  <option value="{{$value.id}}">{{ $value.cate_name }}</option>
   {{/each}}
 </script>
 

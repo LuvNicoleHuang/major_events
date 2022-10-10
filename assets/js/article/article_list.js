@@ -86,15 +86,39 @@ $(function() {
       count: total, // 总数据条数
       limit: q.pagesize, // 每页显示几条数据
       curr: q.pagenum, // 设置默认被选中的分页
+      layout:['count','limit','prev','page','next','skip'],
+      limits:[2,3,5,10],
       // 分页发生切换的时候，触发jump回调
-      jump:function(obj) {
+      jump:function(obj,first) {
         // 把最新页码值赋值到q这个查询参数对象中
         q.pagenum = obj.curr
         q.pagesize = obj.limit
+        if(!first) {
+          initTable()
+        }
       }
     })
   }
 
+  // 通过代理的形式为删除按钮绑定点击事件处理函数
+  $('tbody').on('click','.btn-delete',function() {
+    const len = $('.btn-delete').length
+    const id = $(this).attr('data-id')
+    layer.confirm('确认删除？',{icon:3,title:'提示'},function(index) {
+      $.ajax({
+        type:'DELETE',
+        url:`/my/article/info?id=${id}`,
+        success:function(res) {
+          if(res.code !== 0) return layer.msg('删除文章失败')
+          layer.msg('删除文章成功')
+          if(len === 1) {
+            q.pagenum = q.pagenum === 1 ? 1: q.pagenum -1
+          }
+          initTable()
+        }
+      })
+    })
+  })
 
 
 
